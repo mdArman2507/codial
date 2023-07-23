@@ -8,6 +8,10 @@ module.exports.profile = function (req, res) {
 }
 
 module.exports.singUp = function (req, res) {
+    if(req.isAuthenticated())
+    {
+        return res.redirect('/users/profile');
+    }
     return res.render('user_sign_up', {
         title: "codial | sign Up"
     });
@@ -41,4 +45,24 @@ module.exports.create = function (req, res) {
             return res.redirect('back');
         }
     });
+}
+
+
+module.exports.createSession=function(req,res)
+{
+    return res.redirect('/');
+}
+
+module.exports.destroySession=function(req,res)
+{
+    // req.logout();
+    // return res.redirect('/');
+
+    req.logout(function(err) {
+        if (err) {
+          return next(err);
+        }
+        // req.flash('success', 'You have logged out');
+        res.redirect("/");
+      });
 }
