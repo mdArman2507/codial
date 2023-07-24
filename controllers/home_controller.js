@@ -1,11 +1,18 @@
 const Post=require('../models/post');
-module.exports.home=function(req,res)
+module.exports.home= async function(req,res)
 {
-    Post.find({}).populate('user').exec(
-        function(err,posts) {
-           return res.render('home',{
-              title:" codiel | Home",
-              posts:posts
-    });
-});
+    
+    const posts=await Post.find({})
+    .populate('user')
+    .populate({
+        path:'comments',
+        populate:{
+            path:'user'
+        }
+    })
+    .exec();
+    res.render('home', {
+        title: 'codiel | Home',
+        posts: posts,
+      });
 }

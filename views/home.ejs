@@ -8,7 +8,7 @@
     </form>
     <%}%>
     <div id="posts-list-container">
-        <ul>
+        <ul style="list-style-type:none;">
             <% for(post of posts){%>
                 <li>
                     <p><%= post.content %>
@@ -17,8 +17,31 @@
                         <%= post.user.name %>
                     </small>
                 </p>
+                <div class="post-comments">
+                    <% if(locals.user){%>
+                        <form action="/comments/create" method="post">
+                            <input type="text" name="content" placeholder="tyep here to add comment...">
+                            <input type="hidden" name="post" value="<%= post._id %>">
+                            <input type="submit" value="Add comment">
+                        </form>
+                    <%}%>
+                    
+               <div class="post-comments-list">
+                <ul id="post-comments-<%= post._id%>">
+                    <% for(comment of post.comments){%>
+                        <p>
+                            <%= comment.content %>
+                        </p>
+                        <br>
+                        <small>
+                            <%= comment.user.name %>
+                        </small>
+                    <%}%>
+                </ul>
+            </div>
+                </div>
                 </li>
-                <%}%>
+            <% } %>
         </ul>
     </div>
 </section>
