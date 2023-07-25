@@ -1,17 +1,18 @@
-<header>header
-    <ul style="list-style-type:none;">
+<link rel="stylesheet" href="/css/_header.css">
+<header>
+    <ul style="list-style-type:none;" id="header-ul">
         <% if(locals.user){ %>
-            <li>
+            <li id="profile">
                 <a href="/users/profile"><%= user.name %></a>
             </li>
-            <li>
+            <li id="sign-out">
                 <a href="/users/sign-out">SignOut</a>
             </li>
         <%} else {%>
-            <li>
+            <li id="sign-in">
                 <a href="/users/sign-in">SignIn</a>
             </li>
-            <li>
+            <li id="sign-up">
                 <a href="/users/sign-up">SignUp</a>
             </li>
             <%}%>
