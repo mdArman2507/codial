@@ -1,4 +1,5 @@
 const Post=require('../models/post');
+const User=require('../models/user');
 module.exports.home= async function(req,res)
 {
     
@@ -10,9 +11,13 @@ module.exports.home= async function(req,res)
             path:'user'
         }
     })
-    .exec();
-    res.render('home', {
-        title: 'codiel | Home',
-        posts: posts,
-      });
+    .exec(function(err,posts){
+        User.find({},function(err,users){
+            res.render('home', {
+                title: 'codiel | Home',
+                posts: posts,
+                all_users:users
+              });
+        });
+    });
 }
