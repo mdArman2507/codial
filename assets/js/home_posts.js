@@ -12,7 +12,8 @@
                 data: newPostForm.serialize(),
                 success: function (data) {
                     let newPost=newPostDom(data.data.post);
-                    $('#posts-list-container>ul').prepend(newPost)
+                    $('#posts-list-container>ul').prepend(newPost);
+                    deletePost($(' .delete-post-button',newPost));
                 },
                 error: function (error) {
                     console.log(error.resposeText);
@@ -47,6 +48,23 @@
     </div>
     </div>
     </li>`)
+    }
+
+    let deletePost=function(deleteLink){
+        $(deleteLink).click(function(e){
+            e.preventDefault();
+
+            $.ajax({
+                type:'get',
+                url:$(deleteLink).prop('href'),
+                success:function(data){
+                    $(`#post-${data.data.post_id}`).remove();
+                },
+                error:function(error){
+                    console.log(error.resposeText);
+                }
+            });
+        });
     }
 
     createPost();

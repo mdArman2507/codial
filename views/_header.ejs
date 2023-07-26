@@ -3,7 +3,7 @@
     <ul style="list-style-type:none;" id="header-ul">
         <% if(locals.user){ %>
             <li id="profile">
-                <a href="/users/profile"><%= user.name %></a>
+                <a href="/users/profile/<%=user._id%>"><%= user.name %></a>
             </li>
             <li id="sign-out">
                 <a href="/users/sign-out">SignOut</a>
