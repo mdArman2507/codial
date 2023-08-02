@@ -3,6 +3,7 @@ const Post = require('../models/post');
 const commentMailer=require('../mailers/comments_mailer');
 const queue=require('../config/kue');
 const commentEmailWorker=require('../workers/comment_email_worker');
+const Like=require('../models/like');
 
 module.exports.create = async function (req, res) {
     try {
@@ -17,7 +18,10 @@ module.exports.create = async function (req, res) {
             post.save();
 
             comment=await comment.populate('user','name email');
-            // commentMailer.newComment(comment);
+            commentMailer.newComment(comment);
+
+            //          THIS CODE IS FOR KUE (QUEUE SENDING MAIL)
+
             let job=queue.create('emails',comment).save(function(err){
                 if(err)
                 {
@@ -56,15 +60,31 @@ module.exports.destroy = async function (req, res) {
                 $pull: {
                     comments: req.params.id
                 }
-            })
+            });
+
+
+            await Like.deleteMany({likeable:comment._id,onModel:'Comment'});
+            
+            if(req.xhr)
+            {
+                return res.status(200).json({
+                    data:{
+                        comment_id:req.params.id
+                    },
+                    message:"post deleted successfully"
+                });
+            }
+
+            req.flash('success','Comment Deleted');
             return res.redirect('back');
         }
         else {
+            req.flash('error','Not Deleted');
             return res.redirect('back');
         }
 
     } catch (error) {
-        console.log(error);
-        return;
+        req.flash('error','Error in Deleted');
+        return res.redirect('back');
     }
 }
