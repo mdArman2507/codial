@@ -1,14 +1,11 @@
-#home-container{
-    display: flex;
-}
-#feed-posts{
+#home-container {
+  display: flex; }
+  #home-container #feed-posts {
     width: 70%;
-    padding: 1%;
-    text-align: center;
-}
-#user_friends{
+    padding: 10px;
+ }
+  #home-container #user-friends {
     width: 30%;
-    padding: 2%;
-    border-left: 2px solid lightgray;
-    height: 100%;
-}
+    padding: 10px;
+    border-left: 1px solid lightgrey;
+    height: 100%; }
